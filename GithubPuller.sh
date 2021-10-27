@@ -15,9 +15,9 @@ TEMPDIR="$TMP/temporaryClonedDirectory"
 MAIN_DIR="$(dirname $(readlink -f $0))"
 USAGE="
 Usage: 
-\n    ./updater.sh <userName> <projectName> <branchName> <remoteName> <timeToWait>(optional)
+\n    ./updater.sh <userName> <projectName> <branchName> <remoteName> <email> <timeToWait>(optional)
 \ne.x: 
-\n    ./updater.sh username project main 5
+\n    ./updater.sh username project origin main jhon@doe.com 5
 \n
 \nIt will pull data from branch main in https://github.com/username/project.git 
 \nevery 5 seconds if modified by other collaborators!
@@ -61,7 +61,7 @@ else
 fi
 
 
-if [ -z "$4" ]
+if [ -z "$5" ]
 then 
     echo "[!] -> Since you did not specified waiting time, setting interval time to 1s!"
     echo -e $USAGE
@@ -82,6 +82,28 @@ then
     git clone https://www.github.com/$USERNAME/$PROJECT_NAME.git .
 fi
 
+
+# SET USERNAME AND PASSWORD 
+echo -e "
+\nSome times there are clonflicts in Git repositories. For that, It has to 
+\nStash your local files so it doesn't get overwritten or removed. So please
+\nGive your email address and username for this repository. It will show as a
+\nContributor.
+"
+echo -ne "Email: "
+read email 
+EMAI_ADDR="$email"
+
+echo -ne "Username: "
+read userName
+REPO_USER="$userName"
+
+echo "[!] -> SETTING EMAIL: $EMAI_ADDR for this repository"
+git config user.email $EMAI_ADDR
+echo -e "\n[!] -> SETTING USERNAME: $REPO_USER for this repository"
+git config user.name $REPO_USER
+
+
 # MAIN LOOP
 while true
 do
@@ -89,10 +111,23 @@ do
     git fetch $REMOTE_NAME $BRANCH_NAME
 
     if git status | grep "git pull"
-    then 
+    then
         echo -e "\n[!] -> Pulling data... "
         cd $MAIN_DIR
-        git pull 
+        git pull $REMOTE_NAME $BRANCH_NAME
+    elif git status | grep "modified"
+    then
+      clear 
+      echo "[!] -> SETTING EMAIL: $EMAI_ADDR for this repository"
+      git config user.email $EMAI_ADDR
+      echo -e "\n[!] -> SETTING USERNAME: $USERNAME for this repository"
+      git config user.name $USERNAME 
+      echo "[!] -> STASHING DATA..."
+      git stash
+      echo -e "\n[!] -> Pulling data..."
+      git pull $REMOTE_NAME $BRANCH_NAME
+      echo -e "\n[!] -> Poping Stash"
+      git stash pop 
     else
         echo -e "\n[!] -> No updates yet..."
     fi
