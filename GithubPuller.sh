@@ -128,7 +128,7 @@ do
       echo -e "\n[!] -> Pulling data..."
       git pull $REMOTE_NAME $BRANCH_NAME
       echo -e "\n[!] -> Poping Stash"
-      git stash pop 
+      #git stash pop 
     else
         echo -e "\n[!] -> No updates yet..."
     fi
