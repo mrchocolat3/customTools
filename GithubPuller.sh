@@ -121,7 +121,7 @@ do
       clear 
       git stash
       echo -e "\n[!] -> Pulling data..."
-      git pull $REMOTE_NAME $BRANCH_NAME
+      git pull $REMOTE_NAME $BRANCH_NAME --rebase
       echo -e "\n[!] -> Poping Stash"
       git stash pop 
     else
