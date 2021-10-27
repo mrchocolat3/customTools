@@ -119,16 +119,11 @@ do
     elif git status | grep "modified"
     then
       clear 
-      echo "[!] -> SETTING EMAIL: $EMAI_ADDR for this repository"
-      git config user.email $EMAI_ADDR
-      echo -e "\n[!] -> SETTING USERNAME: $USERNAME for this repository"
-      git config user.name $USERNAME 
-      echo "[!] -> STASHING DATA..."
       git stash
       echo -e "\n[!] -> Pulling data..."
       git pull $REMOTE_NAME $BRANCH_NAME
       echo -e "\n[!] -> Poping Stash"
-      #git stash pop 
+      git stash pop 
     else
         echo -e "\n[!] -> No updates yet..."
     fi
