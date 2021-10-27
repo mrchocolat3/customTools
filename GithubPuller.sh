@@ -110,7 +110,7 @@ do
     echo -e "\n[!] -> Fetching from $REMOTE_NAME: $BRANCH_NAME..."
     git fetch $REMOTE_NAME $BRANCH_NAME
 
-    if git status | grep "git pull"
+    if git status | grep "git push"
     then
         echo -e "\n[!] -> Pulling data... "
         cd $MAIN_DIR
