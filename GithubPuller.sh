@@ -5,6 +5,7 @@ echo -e "
 Name: Github Data Puller
 Author: MrChocolat3. https://www.github.com/mrchocolat3
 Created At: 7/9/2021 
+Updated At: 27/10/2021
 ========================================================
 
 "
@@ -51,13 +52,23 @@ else
 fi 
 
 if [ -z "$4" ]
+then
+  echo "[x] -> Remote Name is missing!"
+  echo -e $USAGE 
+  exit 1
+else
+  REMOTE_NAME=$4
+fi
+
+
+if [ -z "$4" ]
 then 
     echo "[!] -> Since you did not specified waiting time, setting interval time to 1s!"
     echo -e $USAGE
-    WAITING_TIME=$4
+    WAITING_TIME=1
 else 
-    echo "[!] -> Set wait time to $4s"
-    WAITING_TIME=$4
+    echo "[!] -> Set wait time to $5s"
+    WAITING_TIME=$5
 fi 
 
 # CLEAR CACHE ON FIRST RUN AND CLONE THE PROJECT
@@ -74,8 +85,8 @@ fi
 # MAIN LOOP
 while true
 do
-    echo -e "\n[!] -> Fetching from $BRANCH_NAME..."
-    git fetch origin $BRANCH_NAME
+    echo -e "\n[!] -> Fetching from $REMOTE_NAME: $BRANCH_NAME..."
+    git fetch $REMOTE_NAME $BRANCH_NAME
 
     if git status | grep "git pull"
     then 
