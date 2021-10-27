@@ -15,7 +15,7 @@ TEMPDIR="$TMP/temporaryClonedDirectory"
 MAIN_DIR="$(dirname $(readlink -f $0))"
 USAGE="
 Usage: 
-\n    ./updater.sh <userName> <projectName> <timeToWait>(optional)
+\n    ./updater.sh <userName> <projectName> <branchName> <remoteName> <timeToWait>(optional)
 \ne.x: 
 \n    ./updater.sh username project main 5
 \n
